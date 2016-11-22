@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body class="container" ng-controller="GithubController as github">
+    <div id="top" class="well well-lg">
+        <h1>Git Hub Profiler</h1>
+        <p class="lead">Find out more information about any GitHub user!</p>
+    </div>
+    <div class="input-group">
+        <input ng-model="username" type="text" class="form-control" placeholder="Search for...">
+        <span class="input-group-btn">
+				<button ng-click="github.callGithubApi(username)" class="btn btn-default" type="button">Go!</button>
+			</span>
+    </div>
+    <!-- /input-group -->
+    <div id="content" class="row" style="margin-top: 24px;">
+        <div class="col-sm-3 text-center">
+            <img ng-src={{github.userData.avatar_url}} class="img-circle img-responsive">
+            
+            <p>
+                <strong>{{github.userData.name}}</strong> {{github.userData.login}}
+            </p>
+            <p>
+                {{github.userData.location}}
+            </p>
+            <p ng-class="github.statusColor">
+                {{github.statusResult}}
+            </p>
+            <p>
+                {{github.slinging}} {{github.userData.created_at | date: 'MM-dd-yyyy'}}
+            </p>
+            <p>
+                <button class="btn btn-primary" ng-click="github.callRepos()" ng-hide="github.hide">Show Repositories</button>
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="well well-lg text-center">
+                        Followers
+                        <p>{{github.userData.followers}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well well-lg text-center">
+                        Following
+                        <p>{{github.userData.following}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                	<div class="well well-lg text-center">
+                		Public Repositories
+            			<p>{{github.userData.public_repos}}</p>
+                	</div>
+                </div>
+            </div>
+
+			<table class="table table-striped col-sm-9 table-hover">
+			  <thead>
+				<th>Repository name</th>
+				<th>URL</th>
+			  </thead>
+			  <tbody>
+				<tr ng-repeat="data in github.reposData">
+					<td>{{data.name}}</td>
+					<td><a ng-href="{{data.html_url}}">{{data.html_url}}</a></td>
+			  </tbody>
+			</table>
+        </div>
+    </div>
+    
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/github/github.controller.js"></script>
+</body>
+
+</html>
